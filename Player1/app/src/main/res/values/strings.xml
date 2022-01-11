@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name">Dafa Music</string>
+<string-array name="exercise_array">
+    <item>exercise_01</item>
+    <item>exercise_02</item>
+    <item>exercise_03</item>
+    <item>exercise_04</item>
+</string-array>
+</resources>
