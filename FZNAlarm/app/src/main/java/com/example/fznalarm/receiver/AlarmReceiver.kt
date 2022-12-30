@@ -106,7 +106,7 @@ private fun play(context: Context){
         null
     }
 
-    mp = MediaPlayer.create(context, R.raw.fzn15)
+    mp = MediaPlayer.create(context, R.raw.lifelike)
     mp!!.start()
 
     mp!!.setOnCompletionListener { mp ->
