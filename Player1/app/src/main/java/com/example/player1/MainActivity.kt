@@ -13,8 +13,8 @@ import java.lang.Exception
 class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
 
     private var mp: MediaPlayer? = null
-    private var currentSong = mutableListOf(R.raw.exercise_01,R.raw.exercise_02,R.raw.exercise_03,
-                                            R.raw.exercise_04)
+    private var currentSong = mutableListOf(R.raw.abstract_fashion_pop,R.raw.lifelike,R.raw.mountain_path,
+                                            R.raw.please_calm_my_mind)
     private var selectedId: Int = 1
     lateinit var spinner: Spinner
     lateinit var textView: TextView

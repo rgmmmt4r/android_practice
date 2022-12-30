@@ -32,7 +32,7 @@
         <ImageView
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:src="@drawable/temple" />
+            android:src="@drawable/yuri_manei" />
 
         <SeekBar
             android:id="@+id/seekbar"
