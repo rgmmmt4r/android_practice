@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         val item = ArrayList<Item>()
 
+
         val priceRange  = IntRange(10,100)
         val array = resources.obtainTypedArray(R.array.image_list)
         for(index in 0 until array.length()){
