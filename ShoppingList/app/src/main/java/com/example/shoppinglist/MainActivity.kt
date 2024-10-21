@@ -3,6 +3,7 @@ package com.example.shoppinglist
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.GridView
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         val array = resources.obtainTypedArray(R.array.image_list)
         for(index in 0 until array.length()){
             val photo = array.getResourceId(index,0)
-            val name = "水果${index}"
+            val name = "水果${index+1}"
             val price = priceRange.random()
             count.add("${index+1}個")
             item.add(Item(photo,name,price))
@@ -44,5 +45,8 @@ class MainActivity : AppCompatActivity() {
         gridView.numColumns = 3
         gridView.adapter = MyAdapter(this,item,R.layout.adapter_vertical)
         listView.adapter = MyAdapter(this,item,R.layout.adapter_horizontal)
+
+
+
     }
 }

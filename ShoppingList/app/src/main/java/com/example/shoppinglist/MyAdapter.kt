@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintSet.Layout
 
 class MyAdapter(
     context: Context,
@@ -20,6 +19,7 @@ class MyAdapter(
         val view = convertView ?:View.inflate(parent.context,layout,null)
         val item = getItem(position) ?: return view
         val imgPhoto = view.findViewById<ImageView>(R.id.imgPhoto)
+        imgPhoto.setImageResource(item.photo)
         val tvMsg = view.findViewById<TextView>(R.id.tvMsg)
         tvMsg.text = if(layout == R.layout.adapter_vertical){
             item.name
