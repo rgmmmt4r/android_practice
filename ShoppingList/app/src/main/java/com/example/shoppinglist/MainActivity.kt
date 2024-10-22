@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val spinner = findViewById<Spinner>(R.id.spinner)
+//        val spinner = findViewById<Spinner>(R.id.spinner)
 //        val listView = findViewById<ListView>(R.id.listView)
 //        val gridView = findViewById<GridView>(R.id.gridView)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             item.add(Item(photo,name,price))
         }
         array.recycle()
-        spinner.adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,count)
+//        spinner.adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,count)
 //        gridView.numColumns = 3
 
         val linearLayoutManager = LinearLayoutManager(this)
