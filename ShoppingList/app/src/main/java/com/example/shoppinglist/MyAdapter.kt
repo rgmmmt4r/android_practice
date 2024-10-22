@@ -7,21 +7,33 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 
+
 class MyAdapter(
     context: Context,
     data: List<Item>,
     private val layout: Int) :ArrayAdapter<Item>(context,layout,data) {
+    class ViewHolder(v: View) {
+        val imgPhoto: ImageView = v.findViewById(R.id.imgPhoto)
+        val tvMsg: TextView = v.findViewById(R.id.tvMsg)
+    }
     override fun getView(
         position: Int,
         convertView: View?,
         parent: ViewGroup
     ): View {
-        val view = convertView ?:View.inflate(parent.context,layout,null)
+        val view: View
+        val holder: ViewHolder
+        if(convertView == null){
+            view = View.inflate(context,layout,null)
+            holder = ViewHolder(view)
+            view.tag = holder
+        }else{
+            view = convertView
+            holder = view.tag as ViewHolder
+        }
         val item = getItem(position) ?: return view
-        val imgPhoto = view.findViewById<ImageView>(R.id.imgPhoto)
-        imgPhoto.setImageResource(item.photo)
-        val tvMsg = view.findViewById<TextView>(R.id.tvMsg)
-        tvMsg.text = if(layout == R.layout.adapter_vertical){
+        holder.imgPhoto.setImageResource(item.photo)
+        holder.tvMsg.text = if(layout == R.layout.adapter_vertical){
             item.name
 
         }else{
