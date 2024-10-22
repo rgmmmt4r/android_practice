@@ -10,6 +10,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +26,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val listView = findViewById<ListView>(R.id.listView)
-        val gridView = findViewById<GridView>(R.id.gridView)
+//        val listView = findViewById<ListView>(R.id.listView)
+//        val gridView = findViewById<GridView>(R.id.gridView)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
         val count = ArrayList<String>()
 
@@ -42,11 +46,15 @@ class MainActivity : AppCompatActivity() {
         }
         array.recycle()
         spinner.adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,count)
-        gridView.numColumns = 3
-        gridView.adapter = MyAdapter(this,item,R.layout.adapter_vertical)
-        listView.adapter = MyAdapter(this,item,R.layout.adapter_horizontal)
+//        gridView.numColumns = 3
 
-
+        val linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.adapter = MyAdapter(item,R.layout.adapter_horizontal)
+//        val gridLayoutManager = GridLayoutManager(this,3)
+//        recyclerView.layoutManager = gridLayoutManager
+//        recyclerView.adapter = MyAdapter(item,R.layout.adapter_vertical)
 
     }
 }
