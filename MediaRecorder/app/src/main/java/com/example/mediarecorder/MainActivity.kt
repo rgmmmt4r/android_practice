@@ -3,13 +3,18 @@ package com.example.mediarecorder
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.io.File
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recorder: MediaRecorder
@@ -66,9 +71,101 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun doInitialize(){
+        @Suppress("DEPRECATION")
+        recorder = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            MediaRecorder(this)
+        }else{
+            MediaRecorder()
+        }
+
+        player = MediaPlayer()
+
+        folder = File(filesDir.absolutePath + "/record")
+
+        if(!folder.exists()){
+            folder.mkdirs()
+        }
+
     }
 
 
     private fun setListener(){
+        val btnRecord = findViewById<Button>(R.id.btnRecord)
+        val btnStopRecord = findViewById<Button>(R.id.btnStopRecord)
+        val btnPlay = findViewById<Button>(R.id.btnPlay)
+        val btnStopPlay = findViewById<Button>(R.id.btnStopPlay)
+        val tvTitle = findViewById<TextView>(R.id.tvTitle)
+
+
+        btnRecord.setOnClickListener(){
+            fileName = "${Calendar.getInstance().time.time}"
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            recorder.setOutputFile(File(folder,fileName).absolutePath)
+            recorder.prepare()
+            recorder.start()
+            tvTitle.text = "錄音中"
+
+            btnRecord.isEnabled = false
+            btnStopRecord.isEnabled = true
+            btnPlay.isEnabled = false
+            btnStopPlay.isEnabled = true
+        }
+
+        btnStopRecord.setOnClickListener(){
+            try{
+                val file = File(folder, fileName)
+                recorder.stop()
+                tvTitle.text = "已儲存至${file.absolutePath}"
+                btnRecord.isEnabled = true
+                btnStopRecord.isEnabled =false
+                btnPlay.isEnabled = true
+                btnStopPlay.isEnabled = false
+            }catch (e:Exception){
+                e.printStackTrace()
+                recorder.reset()
+                tvTitle.text = "錄音失效"
+                btnRecord.isEnabled = true
+                btnStopRecord.isEnabled =false
+                btnPlay.isEnabled = false
+                btnStopPlay.isEnabled = false
+            }
+        }
+
+        btnPlay.setOnClickListener(){
+            val file = File(folder, fileName)
+            player.setDataSource(applicationContext, Uri.fromFile(file))
+            player.setVolume(1f,1f)
+            player.prepare()
+            player.start()
+            tvTitle.text = "播放中"
+            btnRecord.isEnabled = false
+            btnStopRecord.isEnabled =false
+            btnPlay.isEnabled = false
+            btnStopPlay.isEnabled = true
+        }
+
+        btnStopPlay.setOnClickListener(){
+            val file = File(folder, fileName)
+            player.stop()
+            player.reset()
+            tvTitle.text = "播放結束"
+            btnRecord.isEnabled = true
+            btnStopRecord.isEnabled =false
+            btnPlay.isEnabled = true
+            btnStopPlay.isEnabled = false
+        }
+
+        player.setOnCompletionListener {
+            it.reset()
+            tvTitle.text = "播放結束"
+            btnRecord.isEnabled = true
+            btnStopRecord.isEnabled =false
+            btnPlay.isEnabled = true
+            btnStopPlay.isEnabled = false
+        }
+
+
     }
 }
