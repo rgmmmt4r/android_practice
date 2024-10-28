@@ -12,6 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Service"
         tools:targetApi="31">
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name=".SecActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity_sec"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
