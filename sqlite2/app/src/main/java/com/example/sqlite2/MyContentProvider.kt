@@ -2,41 +2,49 @@ package com.example.sqlite2
 
 import android.content.ContentProvider
 import android.content.ContentValues
+import android.content.Context
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 
 class MyContentProvider : ContentProvider() {
+    private lateinit var dbrw: SQLiteDatabase
 
-    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
-        TODO("Implement this to handle requests to delete one or more rows")
+    override fun delete(
+        uri: Uri, selection: String?,
+        selectionArgs: Array<String>?): Int {
+        val name = selection ?:return 0
+        return dbrw.delete("myTable","book='${name}'",null)
     }
 
-    override fun getType(uri: Uri): String? {
-        TODO(
-            "Implement this to handle requests for the MIME type of the data" +
-                    "at the given URI"
-        )
-    }
+    override fun getType(uri: Uri): String? = null
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        TODO("Implement this to handle requests to insert a new row.")
+        val book = values ?:return null
+        val rowId = dbrw.insert("myTable", null, book)
+        return Uri.parse("content://com.example.sqlite2/$rowId")
     }
 
     override fun onCreate(): Boolean {
-        TODO("Implement this to initialize your content provider on startup.")
+        val context = context ?:return false
+        dbrw = MyDBHelper(context).writableDatabase
+        return true
     }
 
     override fun query(
         uri: Uri, projection: Array<String>?, selection: String?,
         selectionArgs: Array<String>?, sortOrder: String?
     ): Cursor? {
-        TODO("Implement this to handle query requests from clients.")
+        val queryString = if(selection == null) null else "book='${selection}'"
+        return dbrw.query("myTable",null,queryString,null,null,null,null)
     }
 
     override fun update(
         uri: Uri, values: ContentValues?, selection: String?,
         selectionArgs: Array<String>?
     ): Int {
-        TODO("Implement this to handle requests to update one or more rows.")
+        val name = selection ?:return 0
+        val price = values ?:return 0
+        return dbrw.update("myTable",price,"book='${name}'",null)
     }
 }

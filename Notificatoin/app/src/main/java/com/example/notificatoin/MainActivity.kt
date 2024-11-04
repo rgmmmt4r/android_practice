@@ -1,4 +1,4 @@
-package com.example.sqlite
+package com.example.notificatoin
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
