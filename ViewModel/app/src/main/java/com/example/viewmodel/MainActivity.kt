@@ -1,8 +1,11 @@
 package com.example.viewmodel
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,13 +24,38 @@ class MainActivity : AppCompatActivity() {
         }
 
         val viewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        val tvCounter = findViewById<TextView>(R.id.tvCount)
-        val btnCount = findViewById<Button>(R.id.btnCount)
+        val tvHint = findViewById<TextView>(R.id.tvHint)
+        val edAccount = findViewById<TextView>(R.id.edAccount)
+        val edPassword = findViewById<TextView>(R.id.edPassword)
+        val btnRegister = findViewById<Button>(R.id.btnRegister)
 
-        tvCounter.text = "${viewModel.counter}"
-        btnCount.setOnClickListener(){
-            viewModel.incrementCounter()
-            tvCounter.text = "${viewModel.counter}"
+        btnRegister.setOnClickListener(){
+            viewModel.registerAccount(
+                edAccount.text.toString(),
+                edPassword.text.toString()
+            )
+        }
+
+
+        viewModel.registerResult.observe(this){ result ->
+            Toast.makeText(
+                this,result.second,Toast.LENGTH_SHORT
+            ).show()
+
+            if(result.first){
+                tvHint.text = result.second
+                tvHint.setTextColor(
+                    getColor(android.R.color.holo_green_dark)
+                )
+                val i = Intent(this,activity_sec::class.java)
+                startActivity(i)
+            }else{
+                tvHint.text = "註冊失敗：${result.second}"
+                tvHint.setTextColor(
+                    getColor(android.R.color.holo_red_dark)
+                )
+            }
+
         }
     }
 }
